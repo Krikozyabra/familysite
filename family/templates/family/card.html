@@ -1,0 +1,74 @@
+{% extends 'bar.html' %}
+{% load static %}
+{% block content %}
+<link type="text/css" href="{% static "family/css/card.css" %}" rel="stylesheet" />
+<div class="body">
+    <div class="inner-body">
+        <div class="layer1">
+        <div class="photo">
+             {% if man.photo %}
+                 <img class="img-card" src={{ man.photo.url }} alt="Тут должно быть фото">
+             {% else %}
+                 <img class="img-card" src="/familysite/media/photos/default.jpg" alt="Тут должно быть фото">
+             {% endif %}
+        </div>
+            <div class="l1in">
+                <h4>Имя: </h4>
+                <p>{{ man.name }}</p>
+                {% if man.deathDate %}
+            	    <h4>Годы жизни: </h4><p> {{ man.bornDate }} - {{ man.deathDate }}</p>
+                {% else %}
+                    <h4>Дата рождения: </h4><p> {{ man.bornDate }}</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="layer2">
+            <h4>Родители: </h4>
+        {% if parents %}
+            {% for p in parents %}
+                {% if forloop.last %}
+                   <p class="parent last"><a class="parent" href={% url "card" p.parent.id %}>{{ p.parent.name }}</a></p>
+                    {% else %}
+                <p class="parent"><a class="parent" href={% url "card" p.parent.id %}>{{ p.parent.name }}</a></p>
+
+                {% endif %}
+            {% endfor %}
+        {% else %}
+                <p class="parent">Нет данных</p>
+        {% endif %}
+
+        </div>
+        <div class="layer3">
+            <h4>Дети: </h4>
+            <div class="l3in">
+                {% if children %}
+                    {% for c in children %}
+                        <p class="children"><a class="children" href={% url "card" c.child.id %}>{{ c.child.name }}</a></p>
+                    {% endfor %}
+                {% else %}
+                    <p class="children">Нет данных</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="layer4">
+            <h4>Братья и сестры:</h4>
+                {% if bAs %}
+                    {% for b in bAs %}
+                        <p class="bas"><a class="bas" href={% url "card" b.id %}>{{ b.name }}</a></p>
+                    {% endfor %}
+                {% else %}
+                    <p class="bas">Нет данных</p>
+                {% endif %}
+        </div>
+        <div class="layer5">
+            <h4>Биография: </h4>
+            <div class="bio">
+                <p>
+                    {{ man.bio }}
+                </p>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
